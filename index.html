@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+    
+</head>
+<body>
+    <input type="text" id="entrada">
+    <input type="button" value="Imprimir" id="print">
+    <script>
+        // Crear una nueva conexión WebSocket
+        const socket = new WebSocket('ws://localhost:5000/Printer');
+
+        // Evento cuando la conexión se abre
+        socket.addEventListener('open', function (event) {
+            console.log('Conexión abierta');
+            // Enviar datos al servidor
+            socket.send('Hola, servidor!');
+        });
+
+        // Evento cuando se recibe un mensaje del servidor
+        socket.addEventListener('message', function (event) {
+            console.log('Mensaje del servidor: ', event.data);
+        });
+
+        // Evento cuando la conexión se cierra
+        socket.addEventListener('close', function (event) {
+            console.log('Conexión cerrada');
+        });
+
+        // Evento cuando ocurre un error
+        socket.addEventListener('error', function (event) {
+            console.error('Error en la conexión: ', event);
+        });
+
+        document.getElementById("print").addEventListener("click", function(){
+            socket.send("{evento:'print', data: '" + document.getElementById("entrada").value + "'}")
+        });
+    </script>
+</body>
+</html>
