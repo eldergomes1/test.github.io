@@ -8,7 +8,8 @@
 </head>
 <body>
     <input type="text" id="entrada">
-    <input type="button" value="Imprimir" id="print">
+    <input type="button" value="Imprimir Soxket" id="print1">
+    <input type="button" value="Imprimir metodo embebido" id="print2">
     <script>
         // Crear una nueva conexión WebSocket
         const socket = new WebSocket('ws://localhost:5000/Printer');
@@ -35,8 +36,13 @@
             console.error('Error en la conexión: ', event);
         });
 
-        document.getElementById("print").addEventListener("click", function(){
+        document.getElementById("print1").addEventListener("click", function(){
             socket.send("{evento:'print', data: '" + document.getElementById("entrada").value + "'}")
+        });
+
+        document.getElementById("print2").addEventListener("click", function(){
+            const printerHandler = chrome.webview.hostObjects.printerHandler;
+            printerHandler.Print(document.getElementById("entrada").value);
         });
     </script>
 </body>
